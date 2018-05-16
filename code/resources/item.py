@@ -8,6 +8,10 @@ class Item(Resource):
     type = float,
     required = True,
     help = "This field is mandatory" )
+    parser.add_argument('store_id',
+    type = int,
+    required = True,
+    help = "This field is mandatory" )
 
     #@jwt_required()
     def get(self, name):
@@ -25,7 +29,7 @@ class Item(Resource):
 
         request_data = Item.parser.parse_args()
 
-        item = ItemModel(name, request_data['price'])
+        item = ItemModel(name, request_data['price'], request_data['store_id'])
 
         try:
             item.save_to_db()
@@ -51,7 +55,7 @@ class Item(Resource):
         if item:
             item.price = request_data['price']
         else:
-            item = ItemModel(name, request_data['price'])
+            item = ItemModel(name, request_data['price'], request_data['store_id'])
 
         item.save_to_db()
 
